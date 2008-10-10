@@ -1,4 +1,5 @@
 require 'coremidi'
+require 'midi_in'
 
 # Start archaeopteryx 
 # Start GarageBand (just to make sure it's all working)
@@ -11,27 +12,7 @@ require 'coremidi'
 
 # Now run this script
 
-
-class ExampleMidiConsumer
-  include CoreMIDI
-
-  def initialize
-    puts CoreMIDI.sources
-
-    # Names are arbitrary
-    client = CoreMIDI.create_client("SB")
-    port = CoreMIDI.create_input_port(client, "PortA")
-    connect_source_to_port(0, port) # 0 is index into CoreMIDI.sources array
-  end
-
-  def capture
-    while true
-     if data = new_data?
-       puts data.inspect
-     end
-   end
-  end
-end
-
-c = ExampleMidiConsumer.new
-c.capture
+midi_in = MidiIn.new
+midi_in.scan
+midi_in.link(0)
+midi_in.capture

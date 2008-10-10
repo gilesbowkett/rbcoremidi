@@ -1,4 +1,3 @@
-
 require 'rbcoremidi.bundle'
 
 module CoreMIDI
