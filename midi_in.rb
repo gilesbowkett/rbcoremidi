@@ -22,7 +22,7 @@ class MidiIn
   def capture
     while true
      if data = new_data?
-       puts data.inspect
+       yield data
      end
    end
   end
