@@ -7,9 +7,10 @@ midi_in = MidiIn.new
 midi_in.scan
 midi_in.link(0)
 
-midi_in.capture do |data|
-  data[0].data.in_groups_of(3) do |unknown, midi_note_number, unknown|
-    system("open http://boingboing.net") if 60 == midi_note_number
+midi_in.capture do |messages|
+  messages.each do |message|
+    next unless message.respond_to? :note_number
+    system("open http://boingboing.net") if 60 == message.note_number
   end
 end
 

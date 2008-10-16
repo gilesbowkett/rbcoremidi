@@ -1,5 +1,8 @@
 require 'coremidi'
 
+class Controller < Struct.new(:controller, :data) ; end
+class Note < Struct.new(:on_off, :note_number, :velocity) ; end
+
 class MidiIn
   include CoreMIDI
 
@@ -21,10 +24,22 @@ class MidiIn
 
   def capture
     while true
-     if data = new_data?
-       yield data
+     if packets = new_data?
+       yield parse(packets)
      end
    end
   end
+  
+  def parse(packets)
+    packets.collect do |packet|
+      case packet.data[0]
+      when 144..146
+        Note.new(:on, packet.data[1], packet.data[2])
+      when 130
+        Note.new(:off, packet.data[1], packet.data[2])
+      when 176
+        Controller.new(packet.data[1], packet.data[2])
+      end
+    end
+  end
 end
-

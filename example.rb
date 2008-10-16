@@ -15,4 +15,4 @@ require 'midi_in'
 midi_in = MidiIn.new
 midi_in.scan
 midi_in.link(0)
-midi_in.capture {|data| puts data}
+midi_in.capture {|data| puts data.inspect}
