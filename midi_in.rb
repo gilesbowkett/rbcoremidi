@@ -9,7 +9,8 @@ class MidiIn
   def initialize
     # Names are arbitrary
     client = CoreMIDI.create_client("SB")
-    @port = CoreMIDI.create_input_port(client, "PortA")
+    @port = CoreMIDI.create_input_port(client, "Port1")
+    @port2 = CoreMIDI.create_input_port(client, "Port2")
   end
 
   def scan
@@ -19,7 +20,8 @@ class MidiIn
   end
 
   def link(source)
-    connect_source_to_port(source, @port) # 0 is index into CoreMIDI.sources array
+    port = rand > 0.5 ? @port : @port2
+    connect_source_to_port(source, port) # 0 is index into CoreMIDI.sources array
   end
 
   def capture
@@ -32,14 +34,8 @@ class MidiIn
   
   def parse(packets)
     packets.collect do |packet|
-      case packet.data[0]
-      when 144..146
-        Note.new(:on, packet.data[1], packet.data[2])
-      when 130
-        Note.new(:off, packet.data[1], packet.data[2])
-      when 176
-        Controller.new(packet.data[1], packet.data[2])
-      end
+      puts "packet #{packet.data.inspect}"
     end
   end
 end
+
