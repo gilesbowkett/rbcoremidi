@@ -15,5 +15,5 @@ require 'midi_in'
 midi_in = MidiIn.new
 midi_in.scan
 (0..15).to_a.each {|n| midi_in.link(n)}
-midi_in.capture {|data| puts "data #{data.inspect}"}
+midi_in.capture {}
 
