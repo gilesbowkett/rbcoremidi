@@ -32,3 +32,47 @@ midi_in.capture {}
 
 # 7-127 Are all green.
 
+# also to make the transport controls usable, all you have to do is a) isolate the first packet in each
+# transport control's set (transport controls send four packets at a time), b) only accept input from
+# the particular [a, b, c] values in that first packet, and c) disregard any extraneous packets, especially
+# of length greater than three.
+
+# specifically:
+
+# packet [176, 16, 0]
+# packet [176, 17, 0]
+# packet [176, 18, 0]
+# packet [176, 19, 0, 176, 20, 0, 176, 21, 0, 176, 22, 0, 176, 23, 0]
+
+# packet [177, 16, 0]
+# packet [177, 17, 0]
+# packet [177, 18, 0]
+# packet [177, 19, 0, 177, 20, 0, 177, 21, 0, 177, 22, 0, 177, 23, 0]
+
+# in the above real-world data, you would watch for [176, 16, anything] and [177, 16, anything], and
+# disregard the rest as noise.
+
+# similarly, although you can't really do much with that stupid dial, you can at least watch for the
+# presence of its unique packet signature.
+
+# packet [176, 47, 127]
+
+# the third value is useless, and all you can really measure here is the absence or presence of the
+# signal, but a binary signal is still a signal.
+
+# that means you have 63 punch buttons, a dial acting as a 64th punch button, 24 latch buttons, and
+# 9 sliders.
+
+# it may be smart to make some signals real-time. breakbeat composition should probably retain its
+# tiny lag factor, but things like filters and EQ work better live. that way you also get to keep
+# the current algorithmic composition strategy, without having to rethink that stuff (because that
+# stuff was fucking hard to figure out), yet you also get to have the spontaneity of live performance.
+
+# obviously also you can use the latch/toggle buttons to toggle slider functionality, but there's a risk
+# there of overcomplication. likewise obviously, you can map these controls directly to the audio software,
+# or use them to trigger various algorithms. it'd be fun, although very time-consuming, to set them up to
+# trigger gradual processes such as filter sweeps or patch morphs (e.g., a techno-esque square wave bass
+# morphing into a hoover, or the filter morphing in Underworld "Juanita").
+
+# probably worth the effort.
+
