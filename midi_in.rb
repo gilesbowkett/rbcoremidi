@@ -15,7 +15,7 @@ class MidiIn
 
   def scan
     CoreMIDI.sources.each_with_index do |source, index|
-      puts "source #{index}: #{source}"
+      puts "found device: source #{index}: #{source}"
     end
   end
 
